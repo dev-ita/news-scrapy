@@ -109,20 +109,21 @@ class NewsSpider(scrapy.Spider):
         autor = ' '.join(autor).strip()
 
         # capturando datas
-        data = response.xpath("(//time)[1]/text()").getall()
+        date = response.xpath("(//time)[1]/text()").getall()
 
-        if not data:
-            data = response.xpath("(//span[contains(@class, 'posts-date')])[1]/a/text()").getall()
+        if not date:
+            date = response.xpath("(//span[contains(@class, 'posts-date')])[1]/a/text()").getall()
 
-        if not data:
-            data = response.xpath("//div[contains(@class, 'evo-post-date')]//a/text()").getall()
+        if not date:
+            date = response.xpath("//div[contains(@class, 'evo-post-date')]//a/text()").getall()
 
-        data = ' '.join(data).strip()
+        date = ' '.join(date).strip()
 
         # montando o json
         yield {
+            'url': response.url,
             'title': news_title,
             'contents': news_content,
             'author': autor,
-            'date': data
+            'date': date
         }
